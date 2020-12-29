@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+      <link rel="stylesheet" href="../css/basic.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geo Encryption</title>
+  </head>
+  <body>
+    <h1>Geo Encryption</h1>
+    <p>Mit dieser Webapp ist es möglich, anhand der Geolocation eine Datei zu verschlüsseln. 
+        Es ist zusätzlich möglich, ein Passwort anzugeben.
+    </p>
+    <form method="post" enctype="multipart/form-data">
+        <label>Wählen Sie eine Datei aus.
+          <input name="datei" type="file" size="50" accept="text/*"> 
+        </label>  
+        <button>verschlüsseln</button>
+    </form>
+    <div>
+        <input type="checkbox" name="erweiterte Optionen" unchecked>
+        <label for="erweiterte Optionen">erweiterte Optionen</label>
+        <div>
+            <input type="password" id="pass">
+            <label for="pass">Passwort eingeben</label>
+        </div>
+        <div>
+            <input type="password" id="passRepeat">
+            <label for="pass">Passwort wiederholen</label>
+        </div>
+    </div>
+  </body>
+</html>
