@@ -5,3 +5,18 @@ body {
 h1 {
     text-align: center;
 }
+
+.encMap {
+    height: 0;
+    overflow: hidden;
+    padding-bottom: 56%;
+    position: relative;
+}
+
+.encMap iframe {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
