@@ -1,33 +1,128 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-      <link rel="stylesheet" href="../css/basic.css">
+
+<head>
+    <link rel="stylesheet" href="../css/basic.css">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="../javascript/index.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/ulg/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
     <title>Geo Encryption</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <h1>Geo Encryption</h1>
-    <p>Mit dieser Webapp ist es möglich, anhand der Geolocation eine Datei zu verschlüsseln. 
-        Es ist zusätzlich möglich, ein Passwort anzugeben.
-    </p>
-    <form method="post" enctype="multipart/form-data">
-        <label>Wählen Sie eine Datei aus.
-          <input name="datei" type="file" size="50" accept="text/*"> 
-        </label>  
-        <button>verschlüsseln</button>
-    </form>
-    <div>
-        <input type="checkbox" name="erweiterte Optionen" unchecked>
-        <label for="erweiterte Optionen">erweiterte Optionen</label>
-        <div>
-            <input type="password" id="pass">
-            <label for="pass">Passwort eingeben</label>
-        </div>
-        <div>
-            <input type="password" id="passRepeat">
-            <label for="pass">Passwort wiederholen</label>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="bg-dark text-white">
+                    <h4>Verschlüsselung</h4>
+
+                    <label for="myfile">Datei auswählen</label>
+                    <input type="file" id="myfile" name="myfile">
+
+                    <label for="pwEncryptionActivate">Passwort verwenden</label>
+                    <input type="checkbox" id="pwEncryptionActivate">
+                    <input type="password" placeholder="Passwort eingeben">
+                    <input type="password" placeholder="Passwort wiederholen">
+
+                    <label for="mapPositionActivate">Karte verwenden</label>
+                    <input for="mapPositionActivate" type="checkbox">
+                    <div id="mapid" style="width: 350px; height: 300px;"></div>
+                    <script>
+                        var mymap = L.map('mapid').setView([49.0, 8.4], 10);
+
+                        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                            maxZoom: 18,
+                            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+                                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                            id: 'mapbox/streets-v11',
+                            tileSize: 512,
+                            zoomOffset: -1
+                        }).addTo(mymap);
+
+
+                        var popup = L.popup();
+
+                        function onMapClick(e) {
+                            popup
+                                .setLatLng(e.latlng)
+                                .setContent(e.latlng.toString())
+                                .openOn(mymap);
+                        }
+
+                        mymap.on('click', onMapClick);
+                    </script>
+                    <button id="encrypt">Verschlüsseln</button>
+
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="bg-dark text-white">
+                    <div class="bg-dark text-white">
+                        <h4>Entschlüsselung</h4>
+
+                        <label for="myfile1">Datei auswählen</label>
+                        <input type="file" id="myfile1" name="myfile1">
+
+                        <input type="password" placeholder="Passwort eingeben">
+
+                        <div id="mapid1" style="width: 350px; height: 300px;"></div>
+                        <script>
+                            var mymap1 = L.map('mapid1').setView([49.0, 8.4], 11);
+
+                            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                                maxZoom: 18,
+                                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+                                    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                                id: 'mapbox/streets-v11',
+                                tileSize: 512,
+                                zoomOffset: -1
+                            }).addTo(mymap1);
+
+
+                            var popup = L.popup();
+
+                            function onMapClick1(e) {
+                                popup
+                                    .setLatLng(e.latlng)
+                                    .setContent(e.latlng.toString())
+                                    .openOn(mymap1);
+                            }
+
+                            mymap1.on('click', onMapClick1);
+                        </script>
+
+                        <button>Entschlüsseln</button>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="bg-dark text-white">
+                    <h4>Weitere Informationen</h4>
+                    <p>Lorem ipsum dolor..</p>
+                </div>
+            </div>
         </div>
     </div>
-  </body>
+
+
+
+    <footer></footer>
+</body>
+
 </html>

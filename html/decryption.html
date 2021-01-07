@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+      <link rel="stylesheet" href="../css/basic.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geo Encryption</title>
+  </head>
+  <body>
+      <nav>
+          <ul>
+            <li><a href="index.html">Verschlüsseln</a></li>
+            <li><a href="decryption.html">Entschlüsseln</a></li>
+          </ul>
+      </nav>
+    <h1>Decryption</h1>
+    <p>Entschlüsseln sie hier ihre Datei.
+    </p>
+    <form method="post" enctype="multipart/form-data">
+        <label>Wählen Sie eine Datei aus.
+          <input name="datei" type="file" size="50" accept="text/*"> 
+        </label>  
+        <button>entschlüsseln</button>
+    </form>
+    <div>
+        <input type="checkbox" name="erweiterte Optionen" unchecked>
+        <label for="erweiterte Optionen">erweiterte Optionen</label>
+        <div>
+            <input type="password" id="pass">
+            <label for="pass">Passwort eingeben</label>
+        </div>
+    </div>
+  </body>
+</html>
