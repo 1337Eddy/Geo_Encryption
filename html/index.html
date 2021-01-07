@@ -24,55 +24,69 @@
 
 <body>
     <h1>Geo Encryption</h1>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-lg-4">
                 <div class="bg-dark text-white">
-                    <h4>Verschlüsselung</h4>
+                    <div class="col-lg-12 text-center">
+                        <h4>Verschlüsselung</h4>
+                    </div>
 
-                    <label for="myfile">Datei auswählen</label>
-                    <input type="file" id="myfile" name="myfile">
+                    <div class="col-md-12">
+                        <input type="file" id="myfile" name="myfile">
+                    </div>
 
-                    <label for="pwEncryptionActivate">Passwort verwenden</label>
-                    <input type="checkbox" id="pwEncryptionActivate">
-                    <input type="password" placeholder="Passwort eingeben">
-                    <input type="password" placeholder="Passwort wiederholen">
+                    <div class="col-lg-12"><label for="pwEncryptionActivate">Passwort verwenden</label>
+                        <input type="checkbox" id="pwEncryptionActivate" onclick="onSelectPwEnc()">
+                    </div>
 
-                    <label for="mapPositionActivate">Karte verwenden</label>
-                    <input for="mapPositionActivate" type="checkbox">
-                    <div id="mapid" style="width: 350px; height: 300px;"></div>
-                    <script>
-                        var mymap = L.map('mapid').setView([49.0, 8.4], 10);
-
-                        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-                            maxZoom: 18,
-                            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-                                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                            id: 'mapbox/streets-v11',
-                            tileSize: 512,
-                            zoomOffset: -1
-                        }).addTo(mymap);
+                    <div id="pwFields" style="display: none;">
+                        <div class="col-md-6 mb-2"><input type="password" placeholder="Passwort eingeben" id="pwEnc" oninput="pwError()" on></div>
+                        <div class="col-md-6"><input type="password" placeholder="Passwort wiederholen" id="pwEncRepeat" oninput="pwError()"></div>
+                        <div class="col-md-12 mb-4">
+                            <p id="pwError" class="text-danger" style="display: none;">Passwörter stimmen nicht überein!</p>
+                        </div>
 
 
-                        var popup = L.popup();
 
-                        function onMapClick(e) {
-                            popup
-                                .setLatLng(e.latlng)
-                                .setContent(e.latlng.toString())
-                                .openOn(mymap);
-                        }
+                    </div>
+                    <div class="col-lg-12">
+                        <label for="mapPositionActivate">Karte verwenden</label>
+                        <input for="mapPositionActivate" type="checkbox" id="encMapActivate" onclick="onSelectMapEnc()">
+                    </div>
 
-                        mymap.on('click', onMapClick);
-                    </script>
-                    <button id="encrypt">Verschlüsseln</button>
+
+
+                    <div id="encMap" style="display: none;">
+                        <div id="mapid" style="width: 350px; height: 300px;"></div>
+                        <script>
+                            var mymap = L.map('mapid').setView([49.0, 8.4], 10);
+
+                            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                                maxZoom: 18,
+                                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+                                    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                                id: 'mapbox/streets-v11',
+                                tileSize: 512,
+                                zoomOffset: -1
+                            }).addTo(mymap);
+
+                            var popup = L.popup();
+                            mymap.on('click', onMapClick);
+                        </script>
+                    </div>
+                    <div class="col-lg-12 text-center">
+                        <button id="encrypt" onclick="btn()">Verschlüsseln</button>
+                    </div>
 
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="bg-dark text-white">
                     <div class="bg-dark text-white">
-                        <h4>Entschlüsselung</h4>
+                        <div class="col-lg-12 text-center">
+                            <h4>Entschlüsselung</h4>
+                        </div>
 
                         <label for="myfile1">Datei auswählen</label>
                         <input type="file" id="myfile1" name="myfile1">
@@ -94,18 +108,12 @@
 
 
                             var popup = L.popup();
-
-                            function onMapClick1(e) {
-                                popup
-                                    .setLatLng(e.latlng)
-                                    .setContent(e.latlng.toString())
-                                    .openOn(mymap1);
-                            }
-
                             mymap1.on('click', onMapClick1);
                         </script>
+                        <div class="col-lg-12 text-center">
+                            <button>Entschlüsseln</button>
+                        </div>
 
-                        <button>Entschlüsseln</button>
 
                     </div>
 
@@ -113,7 +121,10 @@
             </div>
             <div class="col-lg-4">
                 <div class="bg-dark text-white">
-                    <h4>Weitere Informationen</h4>
+                    <div class="col-lg-12 text-center">
+                        <h4>Weitere Informationen</h4>
+                    </div>
+                    <h4></h4>
                     <p>Lorem ipsum dolor..</p>
                 </div>
             </div>
