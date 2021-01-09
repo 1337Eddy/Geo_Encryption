@@ -44,16 +44,13 @@
                         <div class="col-md-6 mb-2"><input type="password" placeholder="Passwort eingeben" id="pwEnc" oninput="pwMsg()" on></div>
                         <div class="col-md-6"><input type="password" placeholder="Passwort wiederholen" id="pwEncRepeat" oninput="pwMsg()"></div>
 
-                        <div class="col-md-12 mb-4">
+                        <div class="col-md-12 mb-3">
                             <p id="pwError" class="text-danger" style="display: none;">Passwörter stimmen nicht überein!</p>
                             <p id="pwNotUsed" class="text-danger" style="display: none;">Es wurden keine Passwörter eingegeben</p>
                             <p id="weak" class="text-danger" style="display: none;">Schwach</p>
                             <p id="middle" class="text-warning" style="display: none;">Mittel</p>
                             <p id="strong" class="text-success" style="display: none;">Stark</p>
                         </div>
-
-
-
                     </div>
                     <div class="col-lg-12">
                         <label for="mapPositionActivate">Karte verwenden</label>
@@ -63,7 +60,7 @@
 
 
                     <div id="encMap" style="display: none;" class="col-lg-12 text-center">
-                        <div id="mapid" style="width: 350px; height: 300px;"></div>
+                        <div id="mapid" style="width: 100%; height: 300px;"></div>
                         <script>
                             var mymap = L.map('mapid').setView([49.0, 8.4], 10);
 
@@ -92,13 +89,24 @@
                         <div class="col-lg-12 text-center pt-3">
                             <h4>Entschlüsselung</h4>
                         </div>
+                        <div class="col-md-12">
+                            <input type="file" id="myfile1" name="myfile1" class="form-control-file">
+                        </div>
 
-                        <label for="myfile1">Datei auswählen</label>
-                        <input type="file" id="myfile1" name="myfile1">
+                        <div class="col-lg-12"><label for="pwEncryptionActivate">Passwort verwenden</label>
+                            <input type="checkbox" id="pwDecryptionActivate" onclick="onSelectPwDec()">
+                        </div>
+                        <div class="col-lg-12 pl-3 pb-5" style="display: none;" id="decPw">
+                            <input type="password" placeholder="Passwort eingeben" oninput="deactivateDecPwError()" id="decPwField">
+                            <p class="text-danger" id="decError" style="display: none;">Kein Passwort eingegeben</p>
+                        </div>
 
-                        <input type="password" placeholder="Passwort eingeben">
-
-                        <div id="mapid1" style="width: 350px; height: 300px;"></div>
+                        <div class="col-lg-12"><label for="decMapActivate">Karte verwenden</label>
+                            <input type="checkbox" id="decMapActivate" onclick="onSelectMapDec()">
+                        </div>
+                        <div class="col-lg-12 pl-3 pr-3" style="display: none;" id="decMap">
+                            <div id="mapid1" style="width: 100%; height: 300px;"></div>
+                        </div>
                         <script>
                             var mymap1 = L.map('mapid1').setView([49.0, 8.4], 11);
 
@@ -116,7 +124,7 @@
                             mymap1.on('click', onMapClick1);
                         </script>
                         <div class="col-lg-12 text-center pb-3 pt-3">
-                            <button type="button" class="btn btn-secondary">Entschlüsseln</button>
+                            <button id="decrypt" type="button" class="btn btn-secondary" onclick="decrypt()">Entschlüsseln</button>
                         </div>
 
 

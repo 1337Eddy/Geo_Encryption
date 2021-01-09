@@ -29,6 +29,23 @@ function onSelectMapEnc() {
     }
 }
 
+
+function onSelectPwDec() {
+    if (document.querySelector("#pwDecryptionActivate").checked == true) {
+        document.querySelector("#decPw").style.display = 'block';
+    } else {
+        document.querySelector("#decPw").style.display = 'none';
+    }
+}
+
+function onSelectMapDec() {
+    if (document.querySelector("#decMapActivate").checked == true) {
+        document.querySelector("#decMap").style.display = 'block';
+    } else {
+        document.querySelector("#decMap").style.display = 'none';
+    }
+}
+
 function encrypt() {
     if (document.querySelector("#pwEnc").value !== document.querySelector("#pwEncRepeat").value) {
         document.querySelector("#pwError").style.display = 'block';
@@ -63,4 +80,16 @@ function deactivatePwMsg() {
     document.querySelector("#strong").style.display = 'none';
     document.querySelector("#pwNotUsed").style.display = 'none';
     document.querySelector("#pwError").style.display = 'none';
+}
+
+function decrypt() {
+    if (document.querySelector("#pwDecryptionActivate").checked == true && document.querySelector("#decPwField").value.length == 0) {
+        document.querySelector("#decError").style.display = "block";
+    }
+}
+
+function deactivateDecPwError() {
+    if (document.querySelector("#decPwField").value.length > 0) {
+        document.querySelector("#decError").style.display = "none";
+    }
 }
