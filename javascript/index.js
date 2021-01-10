@@ -46,12 +46,33 @@ function onSelectMapDec() {
     }
 }
 
+
 function encrypt() {
-    if (document.querySelector("#pwEnc").value !== document.querySelector("#pwEncRepeat").value) {
-        document.querySelector("#pwError").style.display = 'block';
-    } else if (document.querySelector("#pwEnc").value == "") {
-        document.querySelector("#pwNotUsed").style.display = 'block';
+    if (document.querySelector("#pwEncryptionActivate").checked == true) {
+        if (document.querySelector("#pwEnc").value !== document.querySelector("#pwEncRepeat").value) {
+            document.querySelector("#pwError").style.display = 'block';
+        } else if (document.querySelector("#pwEnc").value == "") {
+            document.querySelector("#pwNotUsed").style.display = 'block';
+        } else {
+
+        }
+    } else {
+        var cryptFile = CryptoJS.AES.encrypt(JSON.stringify(document.querySelector("#myfile")), password);
+        console.log(cryptFile.toString());
+        console.log(cryptFile);
+        //browser.downloads.download(cryptFile);
+        downloadObjectAsJson(cryptFile, "TestFile");
     }
+}
+
+function downloadObjectAsJson(exportObj, exportName) {
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
 }
 
 function pwMsg() {
