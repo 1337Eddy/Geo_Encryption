@@ -18,3 +18,7 @@ function download() {
 
     document.body.removeChild(document.querySelector("#myfile"));
 }
+
+function testDownload() {
+    document.querySelector("#download").href
+}

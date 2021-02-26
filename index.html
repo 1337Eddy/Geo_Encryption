@@ -2,15 +2,15 @@
 <html lang="de">
 
 <head>
-    <link rel="stylesheet" href="../css/basic.css">
+    <link rel="stylesheet" href="css/basic.css">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js "></script>
 
 
-    <script src="../javascript/crypto.js"></script>
-    <script src="../javascript/index.js"></script>
+    <script src="javascript/crypto.js"></script>
+    <script src="javascript/index.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
@@ -143,12 +143,19 @@
                     </div>
                     <h4></h4>
                     <button id="btn" onclick="download()">Encrypt</button>
+                    <a id="download" onclick="testDownload()">download</a>
+                    <a href="index.html" download="index.html">Index runterladen</a>
+
+                    <form action="http://localhost:5050/encrypt" method="post">
+                        <p>Datei</p>
+                        <input type="file" name="Datei auswählen">
+                        <input type="submit" value="abschicken">
+
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-
-
 
     <footer></footer>
 </body>
