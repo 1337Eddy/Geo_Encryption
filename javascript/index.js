@@ -48,6 +48,15 @@ function onSelectMapDec() {
 
 
 function encrypt() {
+    var password = "";
+    if (document.querySelector("#encMapActivate").checked) {
+
+    } else if (navigator.geolocation) {
+        document.querySelector("#ciphertext").value = navigator.geolocation.getCurrentPosition();
+    }
+    if (document.querySelector("#pwEncryptionActivate").checked) {
+
+    }
     if (document.querySelector("#pwEncryptionActivate").checked == true) {
         if (document.querySelector("#pwEnc").value !== document.querySelector("#pwEncRepeat").value) {
             document.querySelector("#pwError").style.display = 'block';
@@ -57,22 +66,21 @@ function encrypt() {
 
         }
     } else {
-        var cryptFile = CryptoJS.AES.encrypt(JSON.stringify(document.querySelector("#myfile")), password);
-        console.log(cryptFile.toString());
-        console.log(cryptFile);
-        //browser.downloads.download(cryptFile);
-        downloadObjectAsJson(cryptFile, "TestFile");
+        var ciphertext = CryptoJS.AES.encrypt(document.querySelector("#plaintext").value, password);
+        document.querySelector("#ciphertext").value = ciphertext;
     }
+
 }
 
-function downloadObjectAsJson(exportObj, exportName) {
-    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
-    var downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", exportName + ".json");
-    document.body.appendChild(downloadAnchorNode); // required for firefox
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
+function decrypt() {
+    var codedPlaintext = CryptoJS.AES.decrypt(document.querySelector("#ciphertext").value, "123456");
+    var plaintext = CryptoJS.enc.Utf8.stringify(codedPlaintext);
+    document.querySelector("#plaintext").value = plaintext;
+    /*
+    if (document.querySelector("#pwDecryptionActivate").checked == true && document.querySelector("#decPwField").value.length == 0) {
+        document.querySelector("#decError").style.display = "block";
+    }
+    */
 }
 
 function pwMsg() {
@@ -103,11 +111,7 @@ function deactivatePwMsg() {
     document.querySelector("#pwError").style.display = 'none';
 }
 
-function decrypt() {
-    if (document.querySelector("#pwDecryptionActivate").checked == true && document.querySelector("#decPwField").value.length == 0) {
-        document.querySelector("#decError").style.display = "block";
-    }
-}
+
 
 function deactivateDecPwError() {
     if (document.querySelector("#decPwField").value.length > 0) {
