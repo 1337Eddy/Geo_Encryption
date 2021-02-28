@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="col-lg-12"><label for="pwEncryptionActivate">Passwort verwenden</label>
-                        <input type="checkbox" id="pwEncryptionActivate" onclick="onSelectPwEnc()">
+                        <input type="checkbox" id="pwEncryptionActivate" onclick="onSelectPwEnc()" autocomplete="off">
                     </div>
 
                     <div id="pwFields" style="display: none;">
@@ -61,7 +61,7 @@
                     </div>
                     <div class="col-lg-12">
                         <label for="mapPositionActivate">Karte verwenden</label>
-                        <input for="mapPositionActivate" type="checkbox" id="encMapActivate" onclick="onSelectMapEnc()">
+                        <input for="mapPositionActivate" type="checkbox" id="encMapActivate" onclick="onSelectMapEnc()" autocomplete="off">
                     </div>
 
 
@@ -104,7 +104,7 @@
                         </div>
 
                         <div class="col-lg-12"><label for="pwEncryptionActivate">Passwort verwenden</label>
-                            <input type="checkbox" id="pwDecryptionActivate" onclick="onSelectPwDec()">
+                            <input type="checkbox" id="pwDecryptionActivate" onclick="onSelectPwDec()" autocomplete="off">
                         </div>
                         <div class="col-lg-12 pl-3 pb-5" style="display: none;" id="decPw">
                             <input type="password" placeholder="Passwort eingeben" oninput="deactivateDecPwError()" id="decPwField">
@@ -112,7 +112,7 @@
                         </div>
 
                         <div class="col-lg-12"><label for="decMapActivate">Karte verwenden</label>
-                            <input type="checkbox" id="decMapActivate" onclick="onSelectMapDec()">
+                            <input type="checkbox" id="decMapActivate" onclick="onSelectMapDec()" autocomplete="off">
                         </div>
                         <div class="col-lg-12 pl-3 pr-3" style="display: none;" id="decMap">
                             <div id="mapid1" style="width: 100%; height: 300px;"></div>

@@ -1,4 +1,16 @@
+var encMapCoords;
+var decMapCoords;
+
 function onMapClick(e) {
+    var encMapPos = e.latlng.toString();
+    encMapPos = encMapPos.substring(7);
+    encMapPos = encMapPos.substring(0, encMapPos.length - 1);
+    encMapPos = encMapPos.split(",");
+    latArr = encMapPos[0].split(".");
+    longArr = encMapPos[1].split(".");
+    lat = latArr[0] + "." + latArr[1].substring(0, 4);
+    long = longArr[0].substring(1) + "." + longArr[1].substring(0, 4);
+    encMapCoords = lat + " " + long;
     popup
         .setLatLng(e.latlng)
         .setContent(e.latlng.toString())
@@ -7,6 +19,15 @@ function onMapClick(e) {
 
 
 function onMapClick1(e) {
+    var encMapPos = e.latlng.toString();
+    encMapPos = encMapPos.substring(7);
+    encMapPos = encMapPos.substring(0, encMapPos.length - 1);
+    encMapPos = encMapPos.split(",");
+    latArr = encMapPos[0].split(".");
+    longArr = encMapPos[1].split(".");
+    lat = latArr[0] + "." + latArr[1].substring(0, 4);
+    long = longArr[0].substring(1) + "." + longArr[1].substring(0, 4);
+    decMapCoords = lat + " " + long;
     popup
         .setLatLng(e.latlng)
         .setContent(e.latlng.toString())
@@ -46,41 +67,94 @@ function onSelectMapDec() {
     }
 }
 
-
-function encrypt() {
+function encryptWithPosition(position) {
     var password = "";
-    if (document.querySelector("#encMapActivate").checked) {
+    lat = position.coords.latitude.toString().split(".");
+    long = position.coords.longitude.toString().split(".");
 
-    } else if (navigator.geolocation) {
-        document.querySelector("#ciphertext").value = navigator.geolocation.getCurrentPosition();
-    }
+    password = lat[0] + "." + lat[1].substring(0, 4) + " " + long[0] + "." + long[1].substring(0, 4);
     if (document.querySelector("#pwEncryptionActivate").checked) {
-
-    }
-    if (document.querySelector("#pwEncryptionActivate").checked == true) {
         if (document.querySelector("#pwEnc").value !== document.querySelector("#pwEncRepeat").value) {
             document.querySelector("#pwError").style.display = 'block';
-        } else if (document.querySelector("#pwEnc").value == "") {
-            document.querySelector("#pwNotUsed").style.display = 'block';
-        } else {
-
         }
-    } else {
-        var ciphertext = CryptoJS.AES.encrypt(document.querySelector("#plaintext").value, password);
-        document.querySelector("#ciphertext").value = ciphertext;
+        password = password + document.querySelector("#pwEnc").value;
     }
+    password = CryptoJS.SHA256(password).toString();
+    var ciphertext = CryptoJS.AES.encrypt(document.querySelector("#plaintext").value, password);
+    document.querySelector("#ciphertext").value = ciphertext;
+}
 
+
+
+function encrypt() {
+    if (document.querySelector("#plaintext").value == "") {
+        console.log("Enter Text");
+        return;
+    }
+    //password activated but not equal
+    if (document.querySelector("#pwEncryptionActivate").checked &&
+        document.querySelector("#pwEnc").value !== document.querySelector("#pwEncRepeat").value) {
+        document.querySelector("#pwError").style.display = 'block';
+    } else if (document.querySelector("#pwEncryptionActivate").checked && // password activated and empty
+        document.querySelector("#pwEnc").value == "") {
+        document.querySelector("#pwNotUsed").style.display = 'block';
+    } else {
+        //Map activated and waypoint setted
+        if (document.querySelector("#encMapActivate").checked && encMapCoords != null) {
+            var password;
+            //password activated
+            if (document.querySelector("#pwEncryptionActivate").checked) {
+                //check password and password repeat are equal
+                if (document.querySelector("#pwEnc").value !== document.querySelector("#pwEncRepeat").value) {
+                    document.querySelector("#pwError").style.display = 'block';
+                }
+                //add manual password to map coordinates
+                password = encMapCoords + document.querySelector("#pwEnc").value;
+            }
+            password = CryptoJS.SHA256(password).toString();
+            var ciphertext = CryptoJS.AES.encrypt(document.querySelector("#plaintext").value, password);
+            document.querySelector("#ciphertext").value = ciphertext;
+        } else if (navigator.geolocation) { //map not activated and GPS in use
+            navigator.geolocation.getCurrentPosition(encryptWithPosition);
+        } else {
+            console.log("GPS nicht verfügbar!")
+        }
+    }
+}
+
+function decryptWithPosition(position) {
+    var password = "";
+    lat = position.coords.latitude.toString().split(".");
+    long = position.coords.longitude.toString().split(".");
+
+    password = lat[0] + "." + lat[1].substring(0, 4) + " " + long[0] + "." + long[1].substring(0, 4);
+    if (document.querySelector("#pwDecryptionActivate").checked) {
+        password = password + document.querySelector("#pwEnc").value;
+    }
+    password = CryptoJS.SHA256(password).toString();
+    console.log(password);
+    var plaintext = CryptoJS.AES.decrypt(document.querySelector("#ciphertext").value, password);
+    console.log(plaintext.toString());
+    document.querySelector("#plaintext").value = CryptoJS.enc.Utf8.stringify(plaintext);
 }
 
 function decrypt() {
-    var codedPlaintext = CryptoJS.AES.decrypt(document.querySelector("#ciphertext").value, "123456");
-    var plaintext = CryptoJS.enc.Utf8.stringify(codedPlaintext);
-    document.querySelector("#plaintext").value = plaintext;
-    /*
-    if (document.querySelector("#pwDecryptionActivate").checked == true && document.querySelector("#decPwField").value.length == 0) {
-        document.querySelector("#decError").style.display = "block";
+    var password = "";
+
+    if (document.querySelector("#decMapActivate").checked) {
+        password = decMapCoords;
+        if (document.querySelector("#pwDecryptionActivate").checked) {
+            password = password + document.querySelector("#decPwField").value;
+        }
+        var codedPlaintext = CryptoJS.AES.decrypt(document.querySelector("#ciphertext").value, password);
+        var plaintext = CryptoJS.enc.Utf8.stringify(codedPlaintext);
+        document.querySelector("#plaintext").value = plaintext;
+    } else if (navigator.geolocation) {
+        password = navigator.geolocation.getCurrentPosition(decryptWithPosition)
+    } else {
+
     }
-    */
+
 }
 
 function pwMsg() {
