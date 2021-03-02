@@ -69,7 +69,7 @@ function onSelectMapDec() {
     }
 }
 
-function generateEncryptionPassword(position) {
+function generateEncryptionPasswordGPS(position) {
     var password = "";
     lat = position.coords.latitude.toString().split(".");
     long = position.coords.longitude.toString().split(".");
@@ -82,20 +82,24 @@ function generateEncryptionPassword(position) {
         }
         password = password + document.querySelector("#pwEnc").value;
     }
+    encryptText(password);
+}
+
+function encryptText(password) {
     password = CryptoJS.SHA256(password).toString();
     var ciphertext = CryptoJS.AES.encrypt(document.querySelector("#plaintext").value, password);
     document.querySelector("#ciphertext").value = ciphertext;
 }
 
-function encryptText(password) {
 
-}
 
 function encrypt() {
     if (document.querySelector("#plaintext").value == "") {
-        console.log("Enter Text");
+        document.querySelector("#noTextEntered").style.display = "block";
         return;
     }
+
+    document.querySelector("#noTextEntered").style.display = "none";
     //password activated but not equal
     if (document.querySelector("#pwEncryptionActivate").checked &&
         document.querySelector("#pwEnc").value !== document.querySelector("#pwEncRepeat").value) {
@@ -116,23 +120,16 @@ function encrypt() {
                 //add manual password to map coordinates
                 password = password + document.querySelector("#pwEnc").value;
             }
-            password = CryptoJS.SHA256(password).toString();
-            var ciphertext = CryptoJS.AES.encrypt(document.querySelector("#plaintext").value, password);
-            if (ciphertext == null) {
-                document.querySelector("#decryptError").style.display = 'block';
-            } else {
-                document.querySelector("#decryptError").style.display = 'none';
-                document.querySelector("#ciphertext").value = ciphertext;
-            }
+            encryptText(password);
         } else if (navigator.geolocation) { //map not activated and GPS in use
-            navigator.geolocation.getCurrentPosition(generateEncryptionPassword);
+            navigator.geolocation.getCurrentPosition(generateEncryptionPasswordGPS);
         } else {
             console.log("GPS nicht verfügbar!")
         }
     }
 }
 
-function decryptWithPosition(position) {
+function generateDecryptionPasswordGPS(position) {
     var password = "";
     lat = position.coords.latitude.toString().split(".");
     long = position.coords.longitude.toString().split(".");
@@ -141,11 +138,7 @@ function decryptWithPosition(position) {
     if (document.querySelector("#pwDecryptionActivate").checked) {
         password = password + document.querySelector("#pwEnc").value;
     }
-    password = CryptoJS.SHA256(password).toString();
-    console.log(password);
-    var plaintext = CryptoJS.AES.decrypt(document.querySelector("#ciphertext").value, password);
-    console.log(plaintext.toString());
-    document.querySelector("#plaintext").value = CryptoJS.enc.Utf8.stringify(plaintext);
+    decryptText(password);
 }
 
 function decrypt() {
@@ -157,18 +150,27 @@ function decrypt() {
         if (document.querySelector("#pwDecryptionActivate").checked) {
             password = password + document.querySelector("#decPwField").value;
         }
-        console.log("Decryption Password: " + password);
-        password = CryptoJS.SHA256(password).toString();
-        console.log("Decryption Password: " + password);
-        var codedPlaintext = CryptoJS.AES.decrypt(document.querySelector("#ciphertext").value, password);
-        var plaintext = CryptoJS.enc.Utf8.stringify(codedPlaintext);
-        document.querySelector("#plaintext").value = plaintext;
+        decryptText(password);
     } else if (navigator.geolocation) {
-        password = navigator.geolocation.getCurrentPosition(decryptWithPosition)
+        password = navigator.geolocation.getCurrentPosition(generateDecryptionPasswordGPS)
     } else {
         console.log("Aktivieren sie GPS oder geben sie eine Position auf der Karte ein!");
     }
 
+}
+
+function decryptText(password) {
+    password = CryptoJS.SHA256(password).toString();
+    var codedPlaintext = CryptoJS.AES.decrypt(document.querySelector("#ciphertext").value, password);
+    var plaintext = CryptoJS.enc.Utf8.stringify(codedPlaintext);
+    console.log(plaintext.length);
+    if (plaintext.length == 0) {
+        document.querySelector("#decryptError").style.display = 'block';
+        document.querySelector("#plaintext").value = "";
+    } else {
+        document.querySelector("#decryptError").style.display = 'none';
+        document.querySelector("#plaintext").value = plaintext;
+    }
 }
 
 function pwMsg() {

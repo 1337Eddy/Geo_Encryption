@@ -37,3 +37,7 @@
     #decryptError {
         color: red;
     }
+    
+    #noTextEntered {
+        color: red;
+    }
