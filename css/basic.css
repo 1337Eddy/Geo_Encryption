@@ -1,22 +1,39 @@
-body {
-    background-color: #959595 !important;
-}
-
-h1 {
-    text-align: center;
-}
-
-.encMap {
-    height: 0;
-    overflow: hidden;
-    padding-bottom: 56%;
-    position: relative;
-}
-
-.encMap iframe {
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
-}
+    body {
+        background-color: #959595 !important;
+    }
+    
+    h1 {
+        text-align: center;
+    }
+    
+    .encMap {
+        height: 0;
+        overflow: hidden;
+        padding-bottom: 56%;
+        position: relative;
+    }
+    
+    .encMap iframe {
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+    
+    .titlebar {
+        margin-top: 15px;
+        margin-left: 15px;
+        margin-right: 15px;
+        background-color: #343a40;
+    }
+    
+    .title {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        color: white;
+    }
+    
+    #decryptError {
+        color: red;
+    }

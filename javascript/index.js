@@ -69,7 +69,7 @@ function onSelectMapDec() {
     }
 }
 
-function encryptWithPosition(position) {
+function generateEncryptionPassword(position) {
     var password = "";
     lat = position.coords.latitude.toString().split(".");
     long = position.coords.longitude.toString().split(".");
@@ -87,7 +87,9 @@ function encryptWithPosition(position) {
     document.querySelector("#ciphertext").value = ciphertext;
 }
 
+function encryptText(password) {
 
+}
 
 function encrypt() {
     if (document.querySelector("#plaintext").value == "") {
@@ -104,7 +106,7 @@ function encrypt() {
     } else {
         //Map activated and waypoint setted
         if (document.querySelector("#encMapActivate").checked && encMapCoords != null) {
-            var password;
+            var password = encMapCoords;
             //password activated
             if (document.querySelector("#pwEncryptionActivate").checked) {
                 //check password and password repeat are equal
@@ -112,13 +114,18 @@ function encrypt() {
                     document.querySelector("#pwError").style.display = 'block';
                 }
                 //add manual password to map coordinates
-                password = encMapCoords + document.querySelector("#pwEnc").value;
+                password = password + document.querySelector("#pwEnc").value;
             }
             password = CryptoJS.SHA256(password).toString();
             var ciphertext = CryptoJS.AES.encrypt(document.querySelector("#plaintext").value, password);
-            document.querySelector("#ciphertext").value = ciphertext;
+            if (ciphertext == null) {
+                document.querySelector("#decryptError").style.display = 'block';
+            } else {
+                document.querySelector("#decryptError").style.display = 'none';
+                document.querySelector("#ciphertext").value = ciphertext;
+            }
         } else if (navigator.geolocation) { //map not activated and GPS in use
-            navigator.geolocation.getCurrentPosition(encryptWithPosition);
+            navigator.geolocation.getCurrentPosition(generateEncryptionPassword);
         } else {
             console.log("GPS nicht verfügbar!")
         }
@@ -142,6 +149,7 @@ function decryptWithPosition(position) {
 }
 
 function decrypt() {
+    console.log("Decrypt")
     var password = "";
 
     if (document.querySelector("#decMapActivate").checked) {
@@ -149,13 +157,12 @@ function decrypt() {
         if (document.querySelector("#pwDecryptionActivate").checked) {
             password = password + document.querySelector("#decPwField").value;
         }
+        console.log("Decryption Password: " + password);
         password = CryptoJS.SHA256(password).toString();
+        console.log("Decryption Password: " + password);
         var codedPlaintext = CryptoJS.AES.decrypt(document.querySelector("#ciphertext").value, password);
         var plaintext = CryptoJS.enc.Utf8.stringify(codedPlaintext);
         document.querySelector("#plaintext").value = plaintext;
-        console.log(plaintext);
-        console.log(codedPlaintext.toString());
-        console.log(password.toString());
     } else if (navigator.geolocation) {
         password = navigator.geolocation.getCurrentPosition(decryptWithPosition)
     } else {
