@@ -147,14 +147,16 @@
                     <div class="col-lg-12 text-center pt-3">
                         <h4>Weitere Informationen</h4>
                     </div>
-                    <h4></h4>
-                    <button id="btn" onclick="download()">Encrypt</button>
-                    <a id="download" onclick="testDownload()">download</a>
-                    <a href="index.html" download="index.html">Index runterladen</a>
+                    <div class="col-lg-12 text-left pl-3">
+                        <p>Auf dieser Webseite ist es möglich Text mit dem AES Verfahren zu ver- und entschlüsseln.
+                            <br> Dabei wird auf Basis von Positionsdaten ein Schlüssel generiert. Die Positionsdaten können über den Browser erhoben werden, welcher entweder GPS Daten oder die IP Adresse hierzu verwendet. Allerdings ist es auch möglich,
+                            eine beliebige, möglicherweise physikalisch unzugängliche oder temporär nicht erreichbare, Position auf der intigrierten Karte anzugeben. <br> Zusätzlich kann die Position dann noch mit einem selbst gewählten Passwort versehen
+                            werden um einen Brute Force Angriff schwieriger zu machen.
+                        </p>
+                        <p>Die Anwendung funktioniert vollständig Clientseitig. Der Klar oder Geheimtext wird nicht auf die Server des Webseiten Betreibers hochgeladen.</p>
+                        <p>Das Projekt findet sich auf GitHub <a href="https://github.com/1337Eddy/Geo_Encryption">https://github.com/1337Eddy/Geo_Encryption</a></p>
+                    </div>
 
-
-                    <input type="file" name="Datei auswählen">
-                    <button>Test</button>
 
                 </div>
             </div>

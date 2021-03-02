@@ -2,14 +2,15 @@ var encMapCoords;
 var decMapCoords;
 
 function onMapClick(e) {
+    console.log("Encryption");
     var encMapPos = e.latlng.toString();
     encMapPos = encMapPos.substring(7);
     encMapPos = encMapPos.substring(0, encMapPos.length - 1);
     encMapPos = encMapPos.split(",");
     latArr = encMapPos[0].split(".");
     longArr = encMapPos[1].split(".");
-    lat = latArr[0] + "." + latArr[1].substring(0, 4);
-    long = longArr[0].substring(1) + "." + longArr[1].substring(0, 4);
+    lat = latArr[0] + "." + latArr[1].substring(0, 3);
+    long = longArr[0].substring(1) + "." + longArr[1].substring(0, 3);
     encMapCoords = lat + " " + long;
     popup
         .setLatLng(e.latlng)
@@ -19,14 +20,15 @@ function onMapClick(e) {
 
 
 function onMapClick1(e) {
+    console.log("Decryption");
     var encMapPos = e.latlng.toString();
     encMapPos = encMapPos.substring(7);
     encMapPos = encMapPos.substring(0, encMapPos.length - 1);
     encMapPos = encMapPos.split(",");
     latArr = encMapPos[0].split(".");
     longArr = encMapPos[1].split(".");
-    lat = latArr[0] + "." + latArr[1].substring(0, 4);
-    long = longArr[0].substring(1) + "." + longArr[1].substring(0, 4);
+    lat = latArr[0] + "." + latArr[1].substring(0, 3);
+    long = longArr[0].substring(1) + "." + longArr[1].substring(0, 3);
     decMapCoords = lat + " " + long;
     popup
         .setLatLng(e.latlng)
@@ -72,7 +74,8 @@ function encryptWithPosition(position) {
     lat = position.coords.latitude.toString().split(".");
     long = position.coords.longitude.toString().split(".");
 
-    password = lat[0] + "." + lat[1].substring(0, 4) + " " + long[0] + "." + long[1].substring(0, 4);
+    password = lat[0] + "." + lat[1].substring(0, 3) + " " + long[0] + "." + long[1].substring(0, 3);
+    console.log(password);
     if (document.querySelector("#pwEncryptionActivate").checked) {
         if (document.querySelector("#pwEnc").value !== document.querySelector("#pwEncRepeat").value) {
             document.querySelector("#pwError").style.display = 'block';
@@ -127,7 +130,7 @@ function decryptWithPosition(position) {
     lat = position.coords.latitude.toString().split(".");
     long = position.coords.longitude.toString().split(".");
 
-    password = lat[0] + "." + lat[1].substring(0, 4) + " " + long[0] + "." + long[1].substring(0, 4);
+    password = lat[0] + "." + lat[1].substring(0, 3) + " " + long[0] + "." + long[1].substring(0, 3);
     if (document.querySelector("#pwDecryptionActivate").checked) {
         password = password + document.querySelector("#pwEnc").value;
     }
@@ -146,13 +149,17 @@ function decrypt() {
         if (document.querySelector("#pwDecryptionActivate").checked) {
             password = password + document.querySelector("#decPwField").value;
         }
+        password = CryptoJS.SHA256(password).toString();
         var codedPlaintext = CryptoJS.AES.decrypt(document.querySelector("#ciphertext").value, password);
         var plaintext = CryptoJS.enc.Utf8.stringify(codedPlaintext);
         document.querySelector("#plaintext").value = plaintext;
+        console.log(plaintext);
+        console.log(codedPlaintext.toString());
+        console.log(password.toString());
     } else if (navigator.geolocation) {
         password = navigator.geolocation.getCurrentPosition(decryptWithPosition)
     } else {
-
+        console.log("Aktivieren sie GPS oder geben sie eine Position auf der Karte ein!");
     }
 
 }
