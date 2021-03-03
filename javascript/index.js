@@ -122,7 +122,7 @@ function encrypt() {
             }
             encryptText(password);
         } else if (navigator.geolocation) { //map not activated and GPS in use
-            navigator.geolocation.getCurrentPosition(generateEncryptionPasswordGPS);
+            navigator.geolocation.getCurrentPosition(generateEncryptionPasswordGPS, { maximumAge: 600000, timeout: 5000, enableHighAccuracy: true });
         } else {
             console.log("GPS nicht verfügbar!")
         }
@@ -152,7 +152,7 @@ function decrypt() {
         }
         decryptText(password);
     } else if (navigator.geolocation) {
-        password = navigator.geolocation.getCurrentPosition(generateDecryptionPasswordGPS)
+        password = navigator.geolocation.getCurrentPosition(generateDecryptionPasswordGPS, { maximumAge: 600000, timeout: 5000, enableHighAccuracy: true })
     } else {
         console.log("Aktivieren sie GPS oder geben sie eine Position auf der Karte ein!");
     }
