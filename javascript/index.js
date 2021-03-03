@@ -4,7 +4,6 @@ var decMapCoords;
 var numberOfDigits = 3;
 
 function onMapClick(e) {
-    console.log("Encryption");
     var encMapPos = e.latlng.toString();
     encMapPos = encMapPos.substring(7);
     encMapPos = encMapPos.substring(0, encMapPos.length - 1);
@@ -22,7 +21,6 @@ function onMapClick(e) {
 
 
 function onMapClick1(e) {
-    console.log("Decryption");
     var encMapPos = e.latlng.toString();
     encMapPos = encMapPos.substring(7);
     encMapPos = encMapPos.substring(0, encMapPos.length - 1);
@@ -197,7 +195,14 @@ function decrypt() {
 function decryptText(password) {
     password = CryptoJS.SHA256(password).toString();
     var codedPlaintext = CryptoJS.AES.decrypt(document.querySelector("#ciphertext").value, password);
-    var plaintext = CryptoJS.enc.Utf8.stringify(codedPlaintext);
+    var plaintext;
+    try {
+        plaintext = CryptoJS.enc.Utf8.stringify(codedPlaintext);
+    } catch {
+        document.querySelector("#decryptError").style.display = 'block';
+        document.querySelector("#plaintext").value = "";
+        return;
+    }
     console.log(plaintext.length);
     if (plaintext.length == 0) {
         document.querySelector("#decryptError").style.display = 'block';
