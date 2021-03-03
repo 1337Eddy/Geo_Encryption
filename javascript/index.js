@@ -1,7 +1,7 @@
 var encMapCoords;
 var decMapCoords;
 
-var numberOfDigits = 2;
+var numberOfDigits = 3;
 
 function onMapClick(e) {
     console.log("Encryption");
