@@ -148,7 +148,8 @@ function encrypt() {
 
 function generateDecryptionPasswordGPS(position) {
     var password = "";
-
+    lat = position.coords.latitude.toString().split(".");
+    long = position.coords.longitude.toString().split(".");
     var coordsLat = "Lat: " + lat[0] + "." + lat[1].substring(0, 4);
     var coordsLong = "Long: " + long[0] + "." + long[1].substring(0, 4);
     document.querySelector("#latDec").textContent = coordsLat;
@@ -156,9 +157,6 @@ function generateDecryptionPasswordGPS(position) {
 
     document.querySelector("#longDec").textContent = coordsLong;
     document.querySelector("#longDec").style.display = 'block';
-
-    lat = position.coords.latitude.toString().split(".");
-    long = position.coords.longitude.toString().split(".");
 
     password = lat[0] + "." + lat[1].substring(0, numberOfDigits) + " " + long[0] + "." + long[1].substring(0, numberOfDigits);
     if (document.querySelector("#pwDecryptionActivate").checked) {
