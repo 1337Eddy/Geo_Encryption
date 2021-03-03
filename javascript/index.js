@@ -1,6 +1,8 @@
 var encMapCoords;
 var decMapCoords;
 
+var numberOfDigits = 2;
+
 function onMapClick(e) {
     console.log("Encryption");
     var encMapPos = e.latlng.toString();
@@ -9,8 +11,8 @@ function onMapClick(e) {
     encMapPos = encMapPos.split(",");
     latArr = encMapPos[0].split(".");
     longArr = encMapPos[1].split(".");
-    lat = latArr[0] + "." + latArr[1].substring(0, 3);
-    long = longArr[0].substring(1) + "." + longArr[1].substring(0, 3);
+    lat = latArr[0] + "." + latArr[1].substring(0, numberOfDigits);
+    long = longArr[0].substring(1) + "." + longArr[1].substring(0, numberOfDigits);
     encMapCoords = lat + " " + long;
     popup
         .setLatLng(e.latlng)
@@ -27,8 +29,8 @@ function onMapClick1(e) {
     encMapPos = encMapPos.split(",");
     latArr = encMapPos[0].split(".");
     longArr = encMapPos[1].split(".");
-    lat = latArr[0] + "." + latArr[1].substring(0, 3);
-    long = longArr[0].substring(1) + "." + longArr[1].substring(0, 3);
+    lat = latArr[0] + "." + latArr[1].substring(0, numberOfDigits);
+    long = longArr[0].substring(1) + "." + longArr[1].substring(0, numberOfDigits);
     decMapCoords = lat + " " + long;
     popup
         .setLatLng(e.latlng)
@@ -74,7 +76,6 @@ function generateEncryptionPasswordGPS(position) {
     lat = position.coords.latitude.toString().split(".");
     long = position.coords.longitude.toString().split(".");
 
-
     var coordsLat = "Lat: " + lat[0] + "." + lat[1].substring(0, 4);
     var coordsLong = "Long: " + long[0] + "." + long[1].substring(0, 4);
     document.querySelector("#lat").textContent = coordsLat;
@@ -83,7 +84,7 @@ function generateEncryptionPasswordGPS(position) {
     document.querySelector("#long").textContent = coordsLong;
     document.querySelector("#long").style.display = 'block';
 
-    password = lat[0] + "." + lat[1].substring(0, 3) + " " + long[0] + "." + long[1].substring(0, 3);
+    password = lat[0] + "." + lat[1].substring(0, numberOfDigits) + " " + long[0] + "." + long[1].substring(0, numberOfDigits);
     console.log(password);
     if (document.querySelector("#pwEncryptionActivate").checked) {
         if (document.querySelector("#pwEnc").value !== document.querySelector("#pwEncRepeat").value) {
@@ -103,6 +104,10 @@ function encryptText(password) {
 
 
 function encrypt() {
+    document.querySelector("#long").style.display = 'none';
+    document.querySelector("#longDec").style.display = 'none';
+    document.querySelector("#lat").style.display = 'none';
+    document.querySelector("#latDec").style.display = 'none';
     if (document.querySelector("#plaintext").value == "") {
         document.querySelector("#noTextEntered").style.display = "block";
         return;
@@ -144,10 +149,19 @@ function encrypt() {
 
 function generateDecryptionPasswordGPS(position) {
     var password = "";
+
+    var coordsLat = "Lat: " + lat[0] + "." + lat[1].substring(0, 4);
+    var coordsLong = "Long: " + long[0] + "." + long[1].substring(0, 4);
+    document.querySelector("#latDec").textContent = coordsLat;
+    document.querySelector("#latDec").style.display = 'block';
+
+    document.querySelector("#longDec").textContent = coordsLong;
+    document.querySelector("#longDec").style.display = 'block';
+
     lat = position.coords.latitude.toString().split(".");
     long = position.coords.longitude.toString().split(".");
 
-    password = lat[0] + "." + lat[1].substring(0, 3) + " " + long[0] + "." + long[1].substring(0, 3);
+    password = lat[0] + "." + lat[1].substring(0, numberOfDigits) + " " + long[0] + "." + long[1].substring(0, numberOfDigits);
     if (document.querySelector("#pwDecryptionActivate").checked) {
         password = password + document.querySelector("#pwEnc").value;
     }
@@ -155,9 +169,10 @@ function generateDecryptionPasswordGPS(position) {
 }
 
 function decrypt() {
-    console.log("Decrypt")
-    document.querySelector("#lat").style.display = 'none';
     document.querySelector("#long").style.display = 'none';
+    document.querySelector("#longDec").style.display = 'none';
+    document.querySelector("#lat").style.display = 'none';
+    document.querySelector("#latDec").style.display = 'none';
 
     var password = "";
 
@@ -172,7 +187,7 @@ function decrypt() {
 
             alert('Please enable your GPS position future.');
 
-        }, { maximumAge: 600000, timeout: 5000, enableHighAccuracy: true })
+        }, { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true })
     } else {
         console.log("Aktivieren sie GPS oder geben sie eine Position auf der Karte ein!");
     }
