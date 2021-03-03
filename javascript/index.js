@@ -102,6 +102,7 @@ function encryptText(password) {
 
 
 function encrypt() {
+    document.querySelector("#decryptError").style.display = 'none';
     document.querySelector("#long").style.display = 'none';
     document.querySelector("#longDec").style.display = 'none';
     document.querySelector("#lat").style.display = 'none';
